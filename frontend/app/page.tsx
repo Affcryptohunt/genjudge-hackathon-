@@ -1,109 +1,51 @@
-"use client";
+'use client';
 
-import { Navbar } from "@/components/Navbar";
-import { BetsTable } from "@/components/BetsTable";
-import { Leaderboard } from "@/components/Leaderboard";
+import { useState } from 'react';
 
-export default function HomePage() {
+export default function GenJudge() {
+  const contract = "0x9016448CB2f181b44C917F3ced443e0bc9Eb9043";
+  const disputeId = "demo1";
+
+  const createCmd = `genlayer write ${contract} create_dispute --args "${disputeId}" "Elon vs Zuck cage fight" "Who actually won the fight?" "https://x.com/elonmusk/status/1880000000000000000" "https://x.com/zuck/status/1880000000000000001"`;
+  const resolveCmd = `genlayer write ${contract} resolve_dispute --args "${disputeId}"`;
+  const viewCmd = `genlayer call ${contract} get_dispute --args "${disputeId}"`;
+
+  const copy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    alert("✅ Copied! Paste into terminal now.");
+  };
+
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Navbar */}
-      <Navbar />
+    <div className="min-h-screen bg-black text-white p-8 font-sans">
+      <div className="max-w-3xl mx-auto text-center">
+        <h1 className="text-6xl font-bold mb-2">🧑‍⚖️ GenJudge</h1>
+        <p className="text-xl text-gray-400 mb-10">AI-Powered Dispute Resolver • Bradbury Testnet</p>
 
-      {/* Main Content - Padding to account for fixed navbar */}
-      <main className="flex-grow pt-20 pb-12 px-4 md:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          {/* Hero Section */}
-          <div className="text-center mb-8 animate-fade-in">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-              Football Prediction Betting
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto">
-              AI-powered football match predictions on GenLayer blockchain.
-              <br />
-              Create bets, make predictions, and compete for points.
-            </p>
+        <div className="bg-zinc-900 rounded-3xl p-8 mb-8">
+          <h2 className="text-2xl mb-6">Create Dispute</h2>
+          <div className="bg-black p-5 rounded-2xl font-mono text-sm mb-6 break-all text-left">{createCmd}</div>
+          <button onClick={() => copy(createCmd)} className="w-full bg-white text-black py-4 rounded-2xl font-bold text-lg hover:bg-gray-200">Copy Create Command</button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-zinc-900 rounded-3xl p-8">
+            <h3 className="text-xl mb-4">Resolve Dispute (AI Judge)</h3>
+            <div className="bg-black p-5 rounded-2xl font-mono text-sm mb-6 break-all text-left">{resolveCmd}</div>
+            <button onClick={() => copy(resolveCmd)} className="w-full bg-purple-600 py-4 rounded-2xl font-bold text-lg hover:bg-purple-700">Copy Resolve Command</button>
           </div>
 
-          {/* Main Grid Layout - 2/1 columns on desktop, stacked on mobile */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8">
-            {/* Left Column - Bets Table (67% on desktop) */}
-            <div className="lg:col-span-8 animate-slide-up">
-              <BetsTable />
-            </div>
-
-            {/* Right Column - Leaderboard (33% on desktop) */}
-            <div className="lg:col-span-4 animate-slide-up" style={{ animationDelay: "100ms" }}>
-              <Leaderboard />
-            </div>
-          </div>
-
-          {/* Info Section */}
-          <div className="mt-8 glass-card p-6 md:p-8 animate-fade-in" style={{ animationDelay: "200ms" }}>
-            <h2 className="text-2xl font-bold mb-4">How it Works</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="space-y-2">
-                <div className="text-accent font-bold text-lg">1. Create a Bet</div>
-                <p className="text-sm text-muted-foreground">
-                  Connect your wallet and create a football match prediction. Choose the teams, date, and your predicted winner.
-                </p>
-              </div>
-              <div className="space-y-2">
-                <div className="text-accent font-bold text-lg">2. Wait for Resolution</div>
-                <p className="text-sm text-muted-foreground">
-                  After the match, the bet creator resolves the bet. GenLayer's AI verifies the actual match result.
-                </p>
-              </div>
-              <div className="space-y-2">
-                <div className="text-accent font-bold text-lg">3. Earn Points</div>
-                <p className="text-sm text-muted-foreground">
-                  Correct predictions earn you points. Climb the leaderboard and prove your football knowledge!
-                </p>
-              </div>
-            </div>
+          <div className="bg-zinc-900 rounded-3xl p-8">
+            <h3 className="text-xl mb-4">View Verdict</h3>
+            <div className="bg-black p-5 rounded-2xl font-mono text-sm mb-6 break-all text-left">{viewCmd}</div>
+            <button onClick={() => copy(viewCmd)} className="w-full bg-white text-black py-4 rounded-2xl font-bold text-lg hover:bg-gray-200">Copy View Command</button>
           </div>
         </div>
-      </main>
 
-      {/* Footer */}
-      <footer className="border-t border-white/10 py-2">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-          <div className="flex items-center justify-center gap-6 text-sm text-muted-foreground">
-              <a
-                href="https://genlayer.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-accent transition-colors"
-              >
-                Powered by GenLayer
-              </a>
-              <a
-                href="https://studio.genlayer.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-accent transition-colors"
-              >
-                Studio
-              </a>
-              <a
-                href="https://docs.genlayer.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-accent transition-colors"
-              >
-                Docs
-              </a>
-              <a
-                href="https://github.com/genlayerlabs/genlayer-project-boilerplate"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-accent transition-colors"
-              >
-                GitHub
-              </a>
-          </div>
+        <div className="mt-12 text-sm text-gray-500">
+          Contract: <span className="font-mono text-purple-400 break-all">{contract}</span><br />
+          Your dispute "demo1" is already created + resolved on the real testnet!
         </div>
-      </footer>
+      </div>
     </div>
   );
 }
